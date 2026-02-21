@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Nimët - Wear the Extraordinary. Discover modest fashion that combines elegance with timeless design.">
+    <meta name="keywords" content="modest fashion, elegant clothing, hijab fashion, abaya, modest dresses">
+    <meta name="author" content="Nimët">
+    <meta property="og:title" content="Nimët - Wear the Extraordinary">
+    <meta property="og:description" content="Discover modest fashion that combines elegance with timeless design.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- CORRECT Airtable Script -->
+    <script src="https://cdn.jsdelivr.net/npm/airtable@0.11.1/lib/airtable.browser.js"></script>
+    
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- CSS Link -->
+    <link rel="stylesheet" href="nimët.css">
+</head>
+
+<body>
+    <!-- OVERLAY (Hidden by Default) -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- NAVIGATION COMPONENTS -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">NIMËT</div>
+            
+            <!-- Desktop Menu -->
+            <ul class="desktop-menu">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#products">Collection</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#cart" class="cart-link" id="cartLink"><i class="fas fa-shopping-bag"></i> Cart <span class="cart-count" id="cartCount">0</span></a></li>
+            </ul>
+
+            <!-- Hamburger Icon -->
+          <div class="hamburger" id="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+            <!-- Mobile Menu (Hidden by Default) -->
+            <ul class="mobile-menu" id="mobileMenu">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#products">Collection</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#cart" class="cart-link"><i class="fas fa-shopping-bag"></i> Cart <span class="cart-count" id="mobileCartCount">0</span></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">MODESTY IS TIMELESS</h1>
+            <p class="hero-subtitle">Elegance is effortless</p>
+            <div class="hero-buttons">
+                <a href="#products" class="btn btn-primary">Explore Collection</a>
+                <a href="#about" class="btn btn-secondary">Our Story</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- BRAND PHILOSOPHY -->
+    <section class="philosophy">
+        <div class="container">
+            <h2 class="section-title">THE NIMËT PHILOSOPHY</h2>
+            <div class="philosophy-grid">
+                <div class="philosophy-card" style="animation-delay: 0.1s">
+                    <div class="gold-line"></div>
+                    <i class="fas fa-heart"></i>
+                    <h3>MODESTY</h3>
+                    <p>Elegant coverage that celebrates grace and sophistication in every stitch.</p>
+                </div>
+                <div class="philosophy-card" style="animation-delay: 0.2s">
+                    <div class="gold-line"></div>
+                    <i class="fas fa-star"></i>
+                    <h3>ELEGANCE</h3>
+                    <p>Refined designs that speak volumes through their understated beauty.</p>
+                </div>
+                <div class="philosophy-card" style="animation-delay: 0.3s">
+                    <div class="gold-line"></div>
+                    <i class="fas fa-infinity"></i>
+                    <h3>TIMELESS</h3>
+                    <p>Classic pieces that transcend seasons and trends, forever in style.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROMOTION BANNER -->
+    <section class="promo-banner">
+        <div class="promo-content">
+            <span class="promo-badge">Limited Time Offer</span>
+            <h2 class="promo-title">SUMMER COLLECTION</h2>
+            <p class="promo-discount">Up to 40% off</p>
+            <div class="countdown" id="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Mins</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Secs</span>
+                </div>
+            </div>
+            <a href="#" class="btn btn-primary">Shop Sale</a>
+        </div>
+    </section>
+
+    <!-- PRODUCTS SECTION -->
+    <section class="products" id="products">
+        <div class="container">
+            <h2 class="section-title">OUR COLLECTION</h2>
+            
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search products...">
+                <select class="category-select" id="categorySelect">
+                    <option value="all">All</option>
+                    <option value="gowns">Gowns</option>
+                    <option value="blazers">Blazers</option>
+                    <option value="dresses">Dresses</option>
+                    <option value="hijabs">Hijabs</option>
+                                  <option value="abaya">Abaya</option>
+                </select>
+            </div>
+
+
+            <!-- Products Grid -->
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about" id="about">
+        <div class="container">
+            <h2 class="section-title">ABOUT NIMËT</h2>
+            <div class="about-content">
+                <p class="about-quote">"Crafting garments that honor the essence of modesty while embracing the elegance of contemporary design. Each piece is a testament to the timeless beauty of understated luxury."</p>
+                <a href="#" class="btn btn-outline">Read Full Story</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUOTE SECTION -->
+    <section class="quote-section">
+        <div class="container">
+            <p class="quote-text">"Elegance is the only beauty that never fades."</p>
+            <p class="quote-author">— Nimët Woman</p>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS SECTION -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">CUSTOMER STORIES</h2>
+            
+            <!-- Testimonial Cards -->
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="review-text">The craftsmanship is exceptional. This piece makes me feel confident and elegant.</p>
+                    <p class="customer-name">— Fatima A., Dubai</p>
+                </div>
+                <div class="testimonial-card">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="review-text">Finally, a brand that understands modern modesty. Absolutely love my new blazer!</p>
+                    <p class="customer-name">— Sarah K., London</p>
+                </div>
+            </div>
+
+            <!-- Review Form -->    
+            <div class="review-form">
+                <h3>Share Your Experience</h3>
+                <form id="reviewForm">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="text" placeholder="Product Name" required>
+                    <select required>    
+                        <option value="">Rating</option>
+                        <option value="5">★★★★★</option>
+                        <option value="4">★★★★☆</option>
+                        <option value="3">★★★☆☆</option>
+                        <option value="2">★★☆☆☆</option>
+                        <option value="1">★☆☆☆☆</option>
+                    </select>
+                    <textarea placeholder="Your Review" rows="4" required></textarea>
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- STYLE JOURNAL / BLOG -->
+    <section class="blog">
+        <div class="container">
+            <h2 class="section-title">STYLE JOURNAL</h2>
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <div class="blog-content">
+                        <h3>5 Ways to Style Your Abaya</h3>
+                        <p class="excerpt">Discover versatile styling tips for your everyday elegance...</p>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <div class="blog-content">
+                        <h3>The Art of Modest Layering</h3>
+                        <p class="excerpt">Master the technique of elegant layering for any season...</p>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <i class="fas fa-image"></i>
+                    </div>
+                    <div class="blog-content">
+                        <h3>Summer Colors That Shine</h3>
+                        <p class="excerpt">Explore our palette picks for the warm months ahead...</p>
+                        <a href="#" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- MODALS (Hidden by Default) -->
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <span class="close-modal" aria-label="Close modal">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <i class="fas fa-image"></i>
+                </div>
+                <div class="modal-details">
+                    <h2 id="modalProductTitle">Product Title</h2>
+                    <p class="modal-price" id="modalProductPrice">$0</p>
+                    
+                    <!-- Size Options -->
+                    <div class="size-options">
+                        <h4>Size</h4>
+                        <div class="size-buttons">
+                            <button class="size-btn" data-size="XS">XS</button>
+                            <button class="size-btn" data-size="S">S</button>
+                            <button class="size-btn" data-size="M">M</button>
+                            <button class="size-btn" data-size="L">L</button>
+                            <button class="size-btn" data-size="XL">XL</button>
+                        </div>
+                    </div>
+
+                    <!-- Color Options -->
+                    <div class="color-options">
+                        <h4>Color</h4>
+                        <div class="color-radios">
+                            <label>
+                                <input type="radio" name="color" value="Gold"> Gold
+                            </label>
+                            <label>
+                                <input type="radio" name="color" value="Black"> Black
+                            </label>
+                            <label>
+                                <input type="radio" name="color" value="Navy"> Navy
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Accessory Options -->
+                    <div class="accessory-options">
+                        <h4>Accessories</h4>
+                        <label>
+                            <input type="checkbox" value="Belt"> Matching Belt (+$29)
+                        </label>
+                        <label>
+                            <input type="checkbox" value="Hijab"> Premium Hijab (+$39)
+                        </label>
+                    </div>
+
+                    <!-- Quantity Controls -->
+                    <div class="quantity-controls">
+                        <h4>Quantity</h4>
+                        <div class="quantity-selector">
+                            <button class="qty-btn" id="decreaseQty">-</button>
+                            <input type="number" id="quantity" value="1" min="1" max="10" readonly>
+                            <button class="qty-btn" id="increaseQty">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" id="addToCartBtn">Add to Cart</button>
+                        <button class="btn btn-secondary" id="buyNowBtn">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mini Cart Notification -->
+    <div class="mini-cart" id="miniCart">
+        <div class="mini-cart-header">
+            <h4>Added to Cart!</h4>
+            <span class="close-mini-cart">&times;</span>
+        </div>
+        <div class="mini-cart-item" id="miniCartItem">
+            <!-- Dynamically filled -->
+        </div>
+        <div class="mini-cart-actions">
+            <button class="btn btn-outline" id="continueShopping">Continue</button>
+            <button class="btn btn-primary" id="checkoutBtn">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Your Cart</h3>
+            <span class="close-cart">&times;</span>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be populated here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">$0</span>
+            </div>
+            <button class="btn btn-primary" id="checkoutSidebarBtn">Checkout</button>
+        </div>
+    </div>
+
+  <!-- Return Request Modal -->
+    <div class="modal" id="returnModal">
+        <div class="modal-content modal-sm">
+            <span class="close-modal">&times;</span>
+            <h2>Request Return</h2>
+            <form id="returnForm">
+                <input type="text" placeholder="Order Number" required>
+                <input type="email" placeholder="Email" required>
+                <select required>
+                    <option value="">Reason for Return</option>
+                    <option value="size">Wrong Size</option>
+                    <option value="defect">Defective Item</option>
+                    <option value="style">Changed Mind</option>
+                </select>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn btn-outline" id="cancelReturn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- CONTACT SECTION -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2 class="section-title">GET IN TOUCH</h2>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <p>+234 901-758-9078</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>hello@nimet.com</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Amikanle, Alagbado, Lagos State.</p>
+                    </div>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <form class="contact-form">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER SECTION -->
+    <section class="newsletter">
+        <div class="container">
+            <h3>Join the Community</h3>
+            <p class="incentive">Get 10% off your first order</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Your email address" required>
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </section>
+    
+        <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">NIMËT</div>
+                    <p class="footer-tagline">Wear the Extraordinary</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#hero">Home</a></li>
+                        <li><a href="#products">Collection</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="#" id="returnLink">Returns</a></li>
+                        <li><a href="#">Shipping</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 Nimët. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Admin Login Modal -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content modal-sm">
+            <span class="close-modal">&times;</span>
+            <h2>Admin Login</h2>
+            <form id="adminForm">
+                <input type="email" placeholder="Email" required>
+                <input type="password" placeholder="Password" required>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="button" class="btn btn-outline" id="cancelAdmin">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+  
+  <!-- Checkout Modal (Hidden by Default) -->
+<div class="modal" id="checkoutModal">
+    <div class="modal-content modal-lg">
+        <span class="close-modal">&times;</span>
+        <h2>Checkout</h2>
+        
+        <!-- Progress Bar -->
+        <div class="checkout-progress">
+            <div class="progress-step active" id="step1">1. Delivery</div>
+            <div class="progress-step" id="step2">2. Payment</div>
+            <div class="progress-step" id="step3">3. Review</div>
+        </div>
+
+        <!-- Step 1: Delivery Information -->
+        <div class="checkout-step" id="deliveryStep">
+            <h3>Delivery Location</h3>
+            
+            <div class="location-toggle">
+                <label>
+                    <input type="radio" name="locationType" value="nigeria" checked> Nigeria
+                </label>
+                <label>
+                    <input type="radio" name="locationType" value="international"> International
+                </label>
+            </div>
+
+            <!-- Nigeria Delivery Form -->
+            <div id="nigeriaForm">
+                <div class="form-group">
+                    <label>State</label>
+                    <select id="nigeriaState" required>
+                        <option value="">Select State</option>
+                        <option value="abia">Abia</option>
+                        <option value="adamawa">Adamawa</option>
+                        <option value="akwa-ibom">Akwa Ibom</option>
+                        <option value="anambra">Anambra</option>
+                        <option value="bauchi">Bauchi</option>
+                        <option value="bayelsa">Bayelsa</option>
+                        <option value="benue">Benue</option>
+                        <option value="borno">Borno</option>
+                        <option value="cross-river">Cross River</option>
+                        <option value="delta">Delta</option>
+                        <option value="ebonyi">Ebonyi</option>
+                        <option value="edo">Edo</option>
+                        <option value="ekiti">Ekiti</option>
+                        <option value="enugu">Enugu</option>
+                        <option value="gombe">Gombe</option>
+                        <option value="imo">Imo</option>
+                        <option value="jigawa">Jigawa</option>
+                        <option value="kaduna">Kaduna</option>
+                        <option value="kano">Kano</option>
+                        <option value="katsina">Katsina</option>
+                        <option value="kebbi">Kebbi</option>
+                        <option value="kogi">Kogi</option>
+                        <option value="kwara">Kwara</option>
+                        <option value="lagos">Lagos</option>
+                        <option value="nasarawa">Nasarawa</option>
+                        <option value="niger">Niger</option>
+                        <option value="ogun">Ogun</option>
+                        <option value="ondo">Ondo</option>
+                        <option value="osun">Osun</option>
+                        <option value="oyo">Oyo</option>
+                        <option value="plateau">Plateau</option>
+                        <option value="rivers">Rivers</option>
+                        <option value="sokoto">Sokoto</option>
+                        <option value="taraba">Taraba</option>
+                        <option value="yobe">Yobe</option>
+                        <option value="zamfara">Zamfara</option>
+                        <option value="fct">FCT Abuja</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Local Government Area</label>
+                    <input type="text" id="lga" placeholder="Enter LGA" required>
+                </div>
+                <div class="form-group">
+                    <label>Street Address</label>
+                    <input type="text" id="nigeriaAddress" placeholder="House number, street name" required>
+                </div>
+            </div>
+
+            <!-- International Delivery Form -->
+            <div id="internationalForm" style="display: none;">
+                <div class="form-group">
+                    <label>Country</label>
+                    <input type="text" id="country" placeholder="Enter country">
+                </div>
+                <div class="form-group">
+                    <label>State/Province</label>
+                    <input type="text" id="internationalState" placeholder="Enter state or province">
+                </div>
+                <div class="form-group">
+                    <label>City</label>
+                    <input type="text" id="city" placeholder="Enter city">
+                </div>
+                <div class="form-group">
+                    <label>Postal Code</label>
+                    <input type="text" id="postalCode" placeholder="Enter postal code">
+                </div>
+                <div class="form-group">
+                    <label>Street Address</label>
+                    <input type="text" id="internationalAddress" placeholder="House number, street name">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="tel" id="phone" placeholder="Enter phone number" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="deliveryEmail" placeholder="Enter email" required>
+            </div>
+
+            <div class="checkout-navigation">
+                <button class="btn btn-outline" onclick="closeCheckout()">Cancel</button>
+                <button class="btn btn-primary" id="toPaymentBtn">Proceed to Payment</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Payment Method -->
+        <div class="checkout-step" id="paymentStep" style="display: none;">
+            <h3>Payment Method</h3>
+            
+            <div class="payment-options">
+                <div class="payment-option">
+                    <input type="radio" name="paymentMethod" id="cardPayment" value="card" checked>
+                    <label for="cardPayment">
+                        <i class="fas fa-credit-card"></i> Credit/Debit Card
+                    </label>
+                    <div class="payment-details" id="cardDetails">
+                        <div class="form-group">
+                            <label>Card Number</label>
+                            <input type="text" placeholder="1234 5678 9012 3456">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Expiry Date</label>
+                                <input type="text" placeholder="MM/YY">
+                            </div>
+                            <div class="form-group">
+                                <label>CVV</label>
+                                <input type="text" placeholder="123">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Cardholder Name</label>
+                            <input type="text" placeholder="Name on card">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-option">
+                    <input type="radio" name="paymentMethod" id="transferPayment" value="transfer">
+                    <label for="transferPayment">
+                        <i class="fas fa-university"></i> Bank Transfer
+                    </label>
+                    <div class="payment-details" id="transferDetails" style="display: none;">
+                        <p>Bank: First Bank</p>
+                        <p>Account Name: Nimët Fashion</p>
+                        <p>Account Number: 1234567890</p>
+                        <p>Sort Code: 011234567</p>
+                        <p class="note">Upload payment proof after checkout</p>
+                    </div>
+                </div>
+
+                <div class="payment-option">
+                    <input type="radio" name="paymentMethod" id="cashPayment" value="cash">
+                    <label for="cashPayment">
+                        <i class="fas fa-money-bill"></i> Cash on Delivery
+                    </label>
+                    <div class="payment-details" id="cashDetails" style="display: none;">
+                        <p>Pay when you receive your order</p>
+                        <p class="note">Additional ₦1000 delivery fee for COD</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checkout-navigation">
+                <button class="btn btn-outline" id="backToDeliveryBtn">Back</button>
+                <button class="btn btn-primary" id="toReviewBtn">Proceed to Review</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Review Order -->
+<div class="checkout-step" id="reviewStep" style="display: none;">
+    <h3>Review Your Order</h3>
+    
+    <div class="order-summary">
+        <h4>Order #<span id="orderNumberDisplay"></span></h4>
+        
+        <div class="summary-section">
+            <h5>Items</h5>
+            <div id="reviewItems"></div>
+        </div>
+
+        <div class="summary-section">
+            <h5>Delivery Address</h5>
+            <div id="reviewAddress"></div>
+        </div>
+
+        <div class="summary-section">
+            <h5>Payment Method</h5>
+            <div id="reviewPayment"></div>
+        </div>
+
+        <div class="total-amount">
+            <div id="reviewTotal"></div>
+        </div>
+    </div>
+
+    <div class="checkout-navigation">
+        <button class="btn btn-outline" id="backToPaymentBtn">Back</button>
+        <button class="btn btn-primary" id="placeOrderBtn">Place Order</button>
+    </div>
+</div>
+          </div>
+        </div>
+    </div>
+</div>
+
+    <!-- JavaScript Link -->
+    <script src="nimët.js"></script>
+
+</body>
+</html>
