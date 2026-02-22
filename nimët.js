@@ -23,6 +23,7 @@ let currentOrderNumber = '';
 let deliveryInfo = {};
 let paymentInfo = {};
 let products = []; // Will be populated from Netlify function
+let uploadedReceiptFile = null;
 
 // Cache DOM elements
 const domElements = {
@@ -75,7 +76,97 @@ async function loadProductsFromNetlify() {
     }
 }
 
-// ===== INITIALIZE ON PAGE LOAD ===== (ONLY ONE!)
+// ===== FORM SUBMISSION FUNCTIONS =====
+
+// Submit Review Form
+async function submitReview(formData) {
+    try {
+        const response = await fetch('/.netlify/functions/submit-review', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: formData.get('name'),
+                product: formData.get('product'),
+                rating: formData.get('rating'),
+                review: formData.get('review')
+            })
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Error submitting review:', error);
+        throw error;
+    }
+}
+
+// Submit Contact Form
+async function submitContact(formData) {
+    try {
+        const response = await fetch('/.netlify/functions/submit-contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: formData.get('name'),
+                email: formData.get('email'),
+                message: formData.get('message')
+            })
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Error submitting contact:', error);
+        throw error;
+    }
+}
+
+// Submit Return Request
+async function submitReturn(formData) {
+    try {
+        const response = await fetch('/.netlify/functions/submit-return', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                orderNumber: formData.get('orderNumber'),
+                email: formData.get('email'),
+                reason: formData.get('reason')
+            })
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Error submitting return:', error);
+        throw error;
+    }
+}
+
+// Submit Newsletter
+async function submitNewsletter(email) {
+    try {
+        const response = await fetch('/.netlify/functions/submit-newsletter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Error submitting newsletter:', error);
+        throw error;
+    }
+}
+
+// Submit Order
+async function submitOrder(orderData) {
+    try {
+        const response = await fetch('/.netlify/functions/submit-order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(orderData)
+        });
+        return await response.json();
+    } catch (error) {
+        console.error('Error submitting order:', error);
+        throw error;
+    }
+}
+
+// ===== INITIALIZE ON PAGE LOAD =====
 document.addEventListener('DOMContentLoaded', function() {
     loadProductsFromNetlify();
     startCountdown();
@@ -83,7 +174,104 @@ document.addEventListener('DOMContentLoaded', function() {
     updateCartDisplay();
     setupEventListeners();
     setupCheckoutListeners();
+    setupFormListeners();
 });
+
+// ===== SETUP FORM LISTENERS =====
+function setupFormListeners() {
+    // Review Form
+    document.getElementById('reviewForm')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        try {
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+            
+            const formData = new FormData(this);
+            await submitReview(formData);
+            
+            showNotification('Thank you for your review!', 'success');
+            this.reset();
+        } catch (error) {
+            showNotification('Error submitting review. Please try again.', 'error');
+        } finally {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Contact Form
+    document.querySelector('.contact-form')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        try {
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+            
+            const formData = new FormData(this);
+            await submitContact(formData);
+            
+            showNotification('Message sent successfully!', 'success');
+            this.reset();
+        } catch (error) {
+            showNotification('Error sending message. Please try again.', 'error');
+        } finally {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Return Form
+    document.getElementById('returnForm')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        try {
+            submitBtn.textContent = 'Submitting...';
+            submitBtn.disabled = true;
+            
+            const formData = new FormData(this);
+            await submitReturn(formData);
+            
+            showNotification('Return request submitted successfully!', 'success');
+            this.reset();
+            closeAllModals();
+        } catch (error) {
+            showNotification('Error submitting return. Please try again.', 'error');
+        } finally {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Newsletter Form
+    document.querySelector('.newsletter-form')?.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const emailInput = this.querySelector('input[type="email"]');
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        
+        try {
+            submitBtn.textContent = 'Subscribing...';
+            submitBtn.disabled = true;
+            
+            await submitNewsletter(emailInput.value);
+            
+            showNotification('Successfully subscribed!', 'success');
+            this.reset();
+        } catch (error) {
+            showNotification('Error subscribing. Please try again.', 'error');
+        } finally {
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+}
 
 // ===== CHECKOUT MODAL FUNCTIONS =====
 function openCheckoutModal() {
@@ -269,13 +457,100 @@ function setupCheckoutListeners() {
     });
 
     // Place Order button
-    document.getElementById('placeOrderBtn')?.addEventListener('click', function() {
-        showNotification(`Order ${currentOrderNumber} placed successfully!`, 'success');
-        cart = [];
-        saveCartToStorage();
-        updateCartDisplay();
-        closeCheckout();
+    document.getElementById('placeOrderBtn')?.addEventListener('click', async function() {
+        const orderData = {
+            orderNumber: currentOrderNumber,
+            customerName: deliveryInfo.email ? deliveryInfo.email.split('@')[0] : 'Guest',
+            email: deliveryInfo.email,
+            items: JSON.stringify(cart),
+            total: calculateCartTotal(),
+            status: 'Pending',
+            deliveryInfo: deliveryInfo,
+            paymentInfo: paymentInfo
+        };
+        
+        try {
+            await submitOrder(orderData);
+            showNotification(`Order ${currentOrderNumber} placed successfully!`, 'success');
+            cart = [];
+            saveCartToStorage();
+            updateCartDisplay();
+            closeCheckout();
+            
+            // Generate downloadable receipt
+            generateReceipt(orderData);
+        } catch (error) {
+            showNotification('Error placing order. Please try again.', 'error');
+        }
     });
+}
+
+// ===== RECEIPT GENERATION =====
+function generateReceipt(orderData) {
+    const receiptWindow = window.open('', '_blank');
+    const receiptHTML = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Order Receipt - ${orderData.orderNumber}</title>
+            <style>
+                body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+                h1 { color: #D4AF37; border-bottom: 2px solid #D4AF37; padding-bottom: 10px; }
+                .order-details { margin: 20px 0; }
+                table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+                th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+                th { background-color: #f5f5f5; }
+                .total { font-size: 1.2em; font-weight: bold; color: #D4AF37; text-align: right; }
+                .footer { margin-top: 30px; text-align: center; color: #666; }
+            </style>
+        </head>
+        <body>
+            <h1>Nimët - Order Receipt</h1>
+            <div class="order-details">
+                <p><strong>Order Number:</strong> ${orderData.orderNumber}</p>
+                <p><strong>Date:</strong> ${new Date().toLocaleDateString()}</p>
+                <p><strong>Customer:</strong> ${orderData.customerName}</p>
+                <p><strong>Email:</strong> ${orderData.email}</p>
+            </div>
+            
+            <h3>Order Items</h3>
+            <table>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+                ${cart.map(item => `
+                    <tr>
+                        <td>${item.name} ${item.size ? `(${item.size})` : ''} ${item.color ? `- ${item.color}` : ''}</td>
+                        <td>${item.quantity || 1}</td>
+                        <td>₦${item.price.toLocaleString()}</td>
+                        <td>₦${(item.total || item.price).toLocaleString()}</td>
+                    </tr>
+                `).join('')}
+            </table>
+            
+            <div class="total">
+                <p>Total: ₦${orderData.total.toLocaleString()}</p>
+            </div>
+            
+            <div class="footer">
+                <p>Thank you for shopping with Nimët!</p>
+                <p>For any inquiries, please contact hello@nimet.com</p>
+            </div>
+            
+            <script>
+                window.onload = function() {
+                    window.print();
+                }
+            </script>
+        </body>
+        </html>
+    `;
+    
+    receiptWindow.document.write(receiptHTML);
+    receiptWindow.document.close();
 }
 
 // ===== UPDATE REVIEW FUNCTION =====
@@ -495,20 +770,13 @@ function setupEventListeners() {
     document.getElementById('cancelAdmin')?.addEventListener('click', closeAllModals);
     document.getElementById('cancelReturn')?.addEventListener('click', closeAllModals);
     
-    document.getElementById('reviewForm')?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Thank you for your review!');
-        this.reset();
-    });
+    // Remove old form handlers - they're now in setupFormListeners
+    // document.getElementById('reviewForm')?.addEventListener... (removed)
+    // document.getElementById('adminForm')?.addEventListener... (keep for admin)
     
     document.getElementById('adminForm')?.addEventListener('submit', function(e) {
         e.preventDefault();
         authenticateAdmin();
-    });
-    
-    document.getElementById('returnForm')?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        submitReturnRequest();
     });
     
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -891,11 +1159,6 @@ function openReturnModal() {
         returnModal.classList.add('show');
         if (domElements.overlay) domElements.overlay.classList.add('show');
     }
-}
-
-function submitReturnRequest() {
-    showNotification('Return request submitted successfully!', 'success');
-    closeAllModals();
 }
 
 // ===== NOTIFICATION SYSTEM =====
