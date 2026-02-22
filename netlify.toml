@@ -1,8 +1,0 @@
-[build]
-  functions = "netlify/functions"
-  publish = "My.Website"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
