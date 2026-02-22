@@ -51,7 +51,7 @@ async function loadProductsFromNetlify() {
 
     // Try Netlify function
     try {
-        const response = await fetch('https://nimet-website.netlify.app/.netlify/functions/products');
+        const response = await fetch('/.netlify/functions/products');
         const data = await response.json();
         products = data.records.map(record => {
             const fields = record.fields;
